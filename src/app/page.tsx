@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import React from 'react';
 import Globe from "./assets/globe.svg";
 import Profile from "./assets/profie.png";
@@ -30,7 +30,7 @@ const LevelIndicator: React.FC<LevelIndicatorProps> = ({ currentLevel, indicator
 };
 
 export default function Home() {
-  const [language, setLanguage] = useState<string>("EN");
+  const [language] = useState<string>("EN");
   const [level, setLevel] = useState<number>(1);
   const [selectedCard, setSelectedCard] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
