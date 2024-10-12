@@ -8,6 +8,9 @@ import Image from "next/image";
 import Logo from './assets/Logo.svg';
 import L2C1 from "./assets/level2card1.svg";
 import L2C2 from "./assets/level2card2.svg";
+import Back from "./assets/Back.svg";
+import {UploadFromDeviceForm} from "./components/UploadFromDeviceForm";
+import CollectFromWebsiteForm from "./components/CollectFromWebsiteForm";
 
 interface LevelIndicatorProps {
   currentLevel: number;
@@ -115,44 +118,72 @@ export default function Home() {
       case 2:
         return (
           <div className="flex w-full flex-col items-center transition-all duration-500 ease-in-out">
-            <Image src={Logo} alt="Logo" className="w-20 h-20 mb-4" />
-            <h1 className="font-bold w-1/5 text-3xl mt-4 text-center">Upload from device or from web?</h1>
-            <h4 className="w-1/5 text-lg font-normal text-center mt-4">You can choose how to add your first document to DocsGPT</h4>
-            <div className="flex gap-8 mt-6">
-              <div className="flex flex-col items-center">
-                <div
-                  className={`p-4 border rounded-lg shadow-md hover:shadow-xl cursor-pointer ${selectedCard === 1 ? 'border-2 border-purple-700' : ''} transition-shadow duration-300`}
-
-                  onClick={() => handleCardSelect(1)}>
-                  <div className="p-10">
-                    <Image src={L2C1} alt="L1C1" className="w-8  h-8 sm:w-10 sm:h-10" />
-                  </div>
+          {/* Logo */}
+          <Image src={Logo} alt="Logo" className="w-16 h-16 sm:w-20 sm:h-20 mb-4" />
+      
+          {/* Heading */}
+          <h1 className="font-bold text-2xl sm:text-3xl w-4/5 sm:w-2/5 text-center mt-4">
+            Upload from device or from web?
+          </h1>
+      
+          {/* Subheading */}
+          <h4 className="text-base sm:text-lg w-4/5 sm:w-2/5 font-normal text-center mt-4">
+            You can choose how to add your first document to DocsGPT
+          </h4>
+      
+          {/* Card Container */}
+          <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 mt-6">
+      
+            {/* Card 1 */}
+            <div className="flex flex-col items-center">
+              <div
+                className={`p-4 border rounded-lg shadow-md hover:shadow-2xl cursor-pointer ${selectedCard === 1 ? 'border-2 border-purple-700' : ''} transition-shadow duration-300`}
+                onClick={() => handleCardSelect(1)}
+              >
+                <div className="p-6 sm:p-10">
+                  <Image
+                    src={L2C1}
+                    alt="L1C1"
+                    className={`w-10 h-10 sm:w-12 sm:h-12 ${selectedCard === 1 ? 'scale-125' : ''}`}
+                  />
                 </div>
-                <h4 className={` text-md w-2/3 font-normal text-center mt-4  ${selectedCard === 1 ? 'text-purple-700' : ''}`}>Upload from device</h4>
               </div>
-
-              <div className="flex flex-col items-center">
-                <div
-                  className={`p-4 border rounded-lg shadow-md hover:shadow-xl cursor-pointer ${selectedCard === 2 ? 'border-2 border-purple-700' : ''} transition-shadow duration-300`}
-
-                  onClick={() => handleCardSelect(2)}>
-                  <div className="p-10">
-                    <Image src={L2C2} alt="L1C2" className="w-8  h-8 sm:w-10 sm:h-10" />
-                  </div>
-                </div>
-                <h4 className={` text-md w-2/3 font-normal text-center mt-4  ${selectedCard === 2 ? 'text-purple-700' : ''}`}>Collect from a website</h4>
-              </div>
-
+              <h4 className={`text-base sm:text-md w-4/5 sm:w-2/3 font-normal text-center mt-4 ${selectedCard === 1 ? 'text-purple-700' : ''}`}>
+                Upload from device
+              </h4>
             </div>
+      
+            {/* Card 2 */}
+            <div className="flex flex-col items-center">
+              <div
+                className={`p-4 border rounded-lg shadow-md hover:shadow-2xl cursor-pointer ${selectedCard === 2 ? 'border-2 border-purple-700' : ''} transition-shadow duration-300`}
+                onClick={() => handleCardSelect(2)}
+              >
+                <div className="p-6 sm:p-10">
+                  <Image
+                    src={L2C2}
+                    alt="L1C2"
+                    className={`w-10 h-10 sm:w-12 sm:h-12 ${selectedCard === 2 ? 'scale-125' : ''}`}
+                  />
+                </div>
+              </div>
+              <h4 className={`text-base sm:text-md w-4/5 sm:w-2/3 font-normal text-center mt-4 ${selectedCard === 2 ? 'text-purple-700' : ''}`}>
+                Collect from a website
+              </h4>
+            </div>
+      
           </div>
+        </div>
         );
       case 3:
         return (
           <div className="flex flex-col items-center transition-all duration-500 ease-in-out">
             {selectedCard === 1 ? (
-              <div className="p-4 border rounded-lg shadow-md bg-white w-64">Simple Form</div>
+              // <div className="p-4 border rounded-lg shadow-md bg-white w-64">Simple Form</div>
+              <UploadFromDeviceForm/>
             ) : (
-              <div className="p-4 border rounded-lg shadow-md bg-white w-64">Advanced Form</div>
+              // <div className="p-4 border rounded-lg shadow-md bg-white w-64">Advanced Form</div>
+              <CollectFromWebsiteForm/>
             )}
             {isLoading && (
               <div className="mt-8">
@@ -202,16 +233,18 @@ export default function Home() {
               {level === 3 && !isLoading && (
                 <button
                   onClick={handleLevelDown}
-                  className="px-4 py-2 bg-gray-500 text-white rounded-lg transition-all hover:bg-gray-600">
-                  Back
+                  className="px-2 py-1 text-gray-500 hover:text-gray-700 text-lg font-medium transition-colors flex items-center"
+                >
+                  <Image src={Back} alt="<" className="mr-2" /> Back
                 </button>
+
               )}
               <button
                 onClick={level === 2 && selectedCard === null ? undefined : (level === 3 ? handleFinalButtonClick : handleLevelUp)}
                 className={`px-8 py-3 ${level === 2 && selectedCard === null ? 'bg-gray-300 cursor-not-allowed' : 'bg-purple-600 hover:bg-purple-700'} 
                 text-white rounded-lg transition-all shadow-[0_4px_8px_rgba(128,90,213,0.3)]`}
                 disabled={level === 2 && selectedCard === null}>
-                {isLoading ? "In Progress" : level < 3 ? "Get Started" : "You're All Set!"}
+                {isLoading ? "In Progress" : level === 1 ? "Get Started" : level === 2 ? "Next" : "Train"}
               </button>
             </div>
           </>
