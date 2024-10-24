@@ -9,7 +9,7 @@ import Logo from './assets/Logo.svg';
 import L2C1 from "./assets/level2card1.svg";
 import L2C2 from "./assets/level2card2.svg";
 import Back from "./assets/Back.svg";
-import {UploadFromDeviceForm} from "./components/UploadFromDeviceForm";
+import UploadFromDeviceForm from "./components/UploadFromDeviceForm";
 import CollectFromWebsiteForm from "./components/CollectFromWebsiteForm";
 
 interface LevelIndicatorProps {
@@ -34,12 +34,19 @@ const LevelIndicator: React.FC<LevelIndicatorProps> = ({ currentLevel, indicator
 
 export default function Home() {
   const [language] = useState<string>("EN");
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [level, setLevel] = useState<number>(1);
   const [selectedCard, setSelectedCard] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
   const [isFinalPage, setIsFinalPage] = useState<boolean>(false);
 
+
+  const toggleTheme = () => {
+    setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
+    document.documentElement.classList.toggle('dark', theme === 'light'); // Toggle the dark class on the HTML element
+  };
+  
   const handleLevelUp = () => {
     if (level < 3) {
       setLevel(prevLevel => prevLevel + 1);
@@ -75,15 +82,16 @@ export default function Home() {
   const getGradientForLevel = (level: number): string => {
     switch (level) {
       case 1:
-        return 'bg-gradient-to-br from-green-100 to-transparent';
+        return 'bg-gradient-to-br from-green-200 via-white to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-700'; // Light greenish tone
       case 2:
-        return 'bg-gradient-to-br from-pink-100 to-transparent';
+        return 'bg-gradient-to-br from-pink-200 via-white to-white dark:from-purple-900 dark:via-purple-800 dark:to-purple-700'; // Light pink tone
       case 3:
-        return 'bg-gradient-to-br from-orange-100 to-transparent';
+        return 'bg-gradient-to-br from-orange-100 via-white to-white dark:from-indigo-900 dark:via-indigo-800 dark:to-indigo-700'; // Light orange tone
       default:
-        return 'bg-white';
+        return 'bg-white dark:bg-gray-900'; // Default light and dark backgrounds
     }
   };
+  
 
   const renderContentForLevel = (level: number) => {
     if (isFinalPage) {
@@ -118,72 +126,73 @@ export default function Home() {
       case 2:
         return (
           <div className="flex w-full flex-col items-center transition-all duration-500 ease-in-out">
-          {/* Logo */}
-          <Image src={Logo} alt="Logo" className="w-16 h-16 sm:w-20 sm:h-20 mb-4" />
-      
-          {/* Heading */}
-          <h1 className="font-bold text-2xl sm:text-3xl w-4/5 sm:w-2/5 text-center mt-4">
-            Upload from device or from web?
-          </h1>
-      
-          {/* Subheading */}
-          <h4 className="text-base sm:text-lg w-4/5 sm:w-2/5 font-normal text-center mt-4">
-            You can choose how to add your first document to DocsGPT
-          </h4>
-      
-          {/* Card Container */}
-          <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 mt-6">
-      
-            {/* Card 1 */}
-            <div className="flex flex-col items-center">
-              <div
-                className={`p-4 border rounded-lg shadow-md hover:shadow-2xl cursor-pointer ${selectedCard === 1 ? 'border-2 border-purple-700' : ''} transition-shadow duration-300`}
-                onClick={() => handleCardSelect(1)}
-              >
-                <div className="p-6 sm:p-10">
-                  <Image
-                    src={L2C1}
-                    alt="L1C1"
-                    className={`w-10 h-10 sm:w-12 sm:h-12 ${selectedCard === 1 ? 'scale-125' : ''}`}
-                  />
+            {/* Logo */}
+            <Image src={Logo} alt="Logo" className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 mb-4" />
+
+            {/* Heading */}
+            <h1 className="font-bold text-xl sm:text-2xl md:text-3xl lg:text-4xl w-4/5 md:w-3/5 lg:w-2/5 text-center mt-4">
+              Upload from device or from web?
+            </h1>
+
+            {/* Subheading */}
+            <h4 className="text-sm sm:text-base md:text-lg lg:text-xl w-5/6 md:w-3/5 lg:w-1/3 font-normal text-center mt-2 md:mt-4">
+              You can choose how to add your first document to DocsGPT
+            </h4>
+
+            {/* Card Container */}
+            <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 mt-6">
+
+              {/* Card 1 */}
+              <div className="flex flex-col items-center bg-white">
+                <div
+                  className={`p-4 border rounded-lg shadow-md hover:shadow-2xl cursor-pointer ${selectedCard === 1 ? 'border-2 border-purple-700' : ''} transition-shadow duration-300`}
+                  onClick={() => handleCardSelect(1)}
+                >
+                  <div className="p-6 sm:p-8 md:p-10 lg:p-12">
+                    <Image
+                      src={L2C1}
+                      alt="L1C1"
+                      className={`w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 ${selectedCard === 1 ? 'scale-125' : ''}`}
+                    />
+                  </div>
                 </div>
+                <h4 className={`text-xs sm:text-base md:text-lg w-4/5 md:w-2/3 text-center mt-4 ${selectedCard === 1 ? 'text-purple-700' : ''}`}>
+                  Upload from device
+                </h4>
               </div>
-              <h4 className={`text-base sm:text-md w-4/5 sm:w-2/3 font-normal text-center mt-4 ${selectedCard === 1 ? 'text-purple-700' : ''}`}>
-                Upload from device
-              </h4>
-            </div>
-      
-            {/* Card 2 */}
-            <div className="flex flex-col items-center">
-              <div
-                className={`p-4 border rounded-lg shadow-md hover:shadow-2xl cursor-pointer ${selectedCard === 2 ? 'border-2 border-purple-700' : ''} transition-shadow duration-300`}
-                onClick={() => handleCardSelect(2)}
-              >
-                <div className="p-6 sm:p-10">
-                  <Image
-                    src={L2C2}
-                    alt="L1C2"
-                    className={`w-10 h-10 sm:w-12 sm:h-12 ${selectedCard === 2 ? 'scale-125' : ''}`}
-                  />
+
+              {/* Card 2 */}
+              <div className="flex flex-col items-center bg-white">
+                <div
+                  className={`p-4 border rounded-lg shadow-md hover:shadow-2xl cursor-pointer ${selectedCard === 2 ? 'border-2 border-purple-700' : ''} transition-shadow duration-300`}
+                  onClick={() => handleCardSelect(2)}
+                >
+                  <div className="p-6 sm:p-8 md:p-10 lg:p-12">
+                    <Image
+                      src={L2C2}
+                      alt="L1C2"
+                      className={`w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 ${selectedCard === 2 ? 'scale-125' : ''}`}
+                    />
+                  </div>
                 </div>
+                <h4 className={`text-xs sm:text-base md:text-lg w-4/5 md:w-2/3 text-center mt-4 ${selectedCard === 2 ? 'text-purple-700' : ''}`}>
+                  Collect from a website
+                </h4>
               </div>
-              <h4 className={`text-base sm:text-md w-4/5 sm:w-2/3 font-normal text-center mt-4 ${selectedCard === 2 ? 'text-purple-700' : ''}`}>
-                Collect from a website
-              </h4>
+
             </div>
-      
           </div>
-        </div>
+
         );
       case 3:
         return (
           <div className="flex flex-col items-center transition-all duration-500 ease-in-out">
             {selectedCard === 1 ? (
               // <div className="p-4 border rounded-lg shadow-md bg-white w-64">Simple Form</div>
-              <UploadFromDeviceForm/>
+              <UploadFromDeviceForm />
             ) : (
               // <div className="p-4 border rounded-lg shadow-md bg-white w-64">Advanced Form</div>
-              <CollectFromWebsiteForm/>
+              <CollectFromWebsiteForm />
             )}
             {isLoading && (
               <div className="mt-8">
@@ -200,23 +209,30 @@ export default function Home() {
 
   return (
     <div className={`p-4 w-full flex flex-col h-screen ${getGradientForLevel(level)}`}>
-      {!isFinalPage && (
+
+      <div className="flex w-full justify-between items-center lg:items-start">
+        {/* Left Section */}
         <div className="flex w-full justify-between items-center lg:items-start">
-          {/* Left Section */}
-          <div className="flex items-center space-x-2">
-            <span className="font-normal">{language}</span>
-            <Image src={Globe} height={24} width={24} alt="Globe" />
-          </div>
-          {/* Profile Section */}
-          <div className="flex-grow"></div>
-          <div className="rounded-full flex justify-center items-center w-12 h-12 overflow-hidden bg-red-400">
-            <Image src={Profile} alt="Profile" className="w-full h-full object-cover" />
-          </div>
+  {/* Left Section */}
+  <div className="flex items-center space-x-2">
+    <span className="font-normal">{language}</span>
+    <Image src={Globe} height={24} width={24} alt="Globe" onClick={toggleTheme} className="z-30 stroke-current text-red-700 dark:text-white"/>
+
+  </div>
+</div>
+
+
+
+        {/* Profile Section */}
+        <div className="flex-grow"></div>
+        <div className="rounded-full flex justify-center items-center w-12 h-12 overflow-hidden bg-red-400">
+          <Image src={Profile} alt="Profile" className="w-full h-full object-cover" />
         </div>
-      )}
+      </div>
+
 
       {/* Main content section */}
-      <div className="flex-grow flex flex-col justify-center items-center gap-8" id="here">
+      <div className="flex-grow flex flex-col  justify-center items-center gap-8 -translate-y-20" id="here">
         {renderContentForLevel(level)}
 
         {!isFinalPage && (

@@ -7,6 +7,7 @@ const CollectFromWebsiteForm: React.FC = () => {
     name: '',
     link: '',
   });
+  const [selectedOption, setSelectedOption] = useState('From URL');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -27,29 +28,37 @@ const CollectFromWebsiteForm: React.FC = () => {
     setIsFetching(true);
     setTimeout(() => {
       setIsFetching(false);
-      // You can handle link fetching logic here (API call, etc.)
+      // Handle link fetching logic here (API call, etc.)
     }, 2000);
+  };
+
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedOption(e.target.value);
   };
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md mx-auto">
-      <h2 className="text-lg font-bold mb-4">Collect from a website</h2>
-      <div className="space-y-4">
-        {/* Dropdown (simulated here as a disabled field) */}
-        <input
-          type="text"
-          className="w-full border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 p-2 disabled:opacity-60"
-          placeholder="From URL"
-          disabled
-        />
+      <h2 className="text-lg font-bold mb-4 text-gray-700">Collect from a website</h2>
 
-        {/* Name field */}
+      <div className="space-y-4">
+        {/* Dropdown */}
+        <select
+          value={selectedOption}
+          onChange={handleSelectChange}
+          className="w-full border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 p-2 text-gray-600"
+        >
+          <option value="From URL">From URL</option>
+          <option value="From API">From API</option>
+          <option value="From HTML">From HTML</option>
+        </select>
+
+        {/* Name input field */}
         <input
           type="text"
           name="name"
           value={formData.name}
           onChange={handleChange}
-          className="w-full border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 p-2"
+          className="w-full border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 p-2 text-gray-600"
           placeholder="Enter name"
         />
 
@@ -59,11 +68,11 @@ const CollectFromWebsiteForm: React.FC = () => {
           name="link"
           value={formData.link}
           onChange={handleLinkPaste}
-          className="w-full border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 p-2"
+          className="w-full border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 p-2 text-gray-600"
           placeholder="URL Link"
         />
 
-        {/* Fetching Animation */}
+        {/* Fetching animation */}
         <div className="flex items-center justify-between">
           <span className="text-gray-600 text-sm">Fetching</span>
           {isFetching && <FiLoader className="animate-spin text-indigo-500 text-lg" />}
