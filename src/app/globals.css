@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.irregular-circle {
+    clip-path: ellipse(50% 48% at 50% 50%);
+  }
+  
