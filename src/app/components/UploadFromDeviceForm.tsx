@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Image from "next/image";
 
 interface UploadFromDeviceForm {
   language: string;
@@ -13,23 +12,13 @@ interface UploadFromDeviceForm {
 export default function UploadFromDeviceForm() {
   const [fileName, setFileName] = useState<string>("");
   const [uploadedFiles, setUploadedFiles] = useState<string[]>([]);
-
-  // Assuming these props are passed in
-  const [language, setLanguage] = useState<string>("EN");
-  const [level, setLevel] = useState<number>(1);
-  const [selectedCard, setSelectedCard] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [progress, setProgress] = useState<number>(0);
-  const [isFinalPage, setIsFinalPage] = useState<boolean>(false);
 
-  const handleCardSelect = (cardNumber: number) => {
-    setSelectedCard(cardNumber);
-  };
-
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
     if (file && file.size <= 25 * 1024 * 1024) {
       setIsLoading(true);
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       setFileName(file.name);
       setUploadedFiles([...uploadedFiles, file.name]);
       setIsLoading(false);
@@ -39,70 +28,78 @@ export default function UploadFromDeviceForm() {
   };
 
   return (
-    <div className="flex flex-col items-center bg-white p-6 md:p-8 lg:p-10 rounded-lg shadow-lg w-full max-w-lg mx-auto">
-      <h1 className="font-bold text-lg md:text-xl text-center mb-4">
+    <div className="flex flex-col items-start bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg w-full max-w-lg mx-auto">
+      <h1 className="font-semibold text-2xl text-gray-900 dark:text-white mb-8">
         Upload from device
       </h1>
-
-      {/* Input for Name */}
-      <input
-        type="text"
-        className="w-full border-2 border-gray-200 rounded-full p-2 text-center text-gray-500 focus:outline-none mb-4"
-        placeholder="Enter name"
-      />
-
-      {/* File Upload */}
-      <label className="w-full">
-        <input
-          type="file"
-          className="hidden"
-          accept=".pdf,.txt,.rst,.docx,.md,.zip"
-          onChange={handleFileUpload}
-        />
-        <div className="w-full flex justify-center items-center bg-purple-100 border-2 border-purple-500 text-purple-700 font-semibold py-2 px-4 rounded-full cursor-pointer">
-          Choose file
+      <div className="flex - flex-col items-start gap-4">
+        {/* Name Input with better styling */}
+        <div className="w-full relative">
+          <label className="absolute -top-2.5 left-4 px-1 text-sm text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800">
+            Name
+          </label>
+          <input
+            type="text"
+            className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-full bg-transparent text-gray-700 dark:text-gray-300 focus:outline-none focus:border-purple-500 dark:focus:border-purple-400"
+            placeholder="Enter name"
+          />
         </div>
-      </label>
 
-      <p className="text-gray-500 text-xs mt-2">
-        Please upload .pdf, .txt, .rst, .docx, .md, .zip limited to 25mb
-      </p>
-
-      {/* Uploaded Files */}
-      <div className="mt-6">
-        <h3 className="font-semibold">Uploaded Files:</h3>
-        {isLoading ? (
-          <div className="flex items-center mt-2">
-            Fetching
-            <div className="ml-2 animate-spin">
-              <svg
-                className="w-5 h-5 text-gray-500"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                ></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 0116 0"
-                ></path>
-              </svg>
+        {/* File Upload Button */}
+        <div>
+          <label className="w-full mb-3">
+            <input
+              type="file"
+              className="hidden"
+              accept=".pdf,.txt,.rst,.docx,.md,.zip"
+              onChange={handleFileUpload}
+            />
+            <div className="w-fit mx-auto px-8 py-2.5 bg-white dark:bg-transparent border-2 border-purple-500 dark:border-purple-400 text-purple-600 dark:text-purple-400 font-medium rounded-full cursor-pointer hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors">
+              Choose file
             </div>
+          </label>
+        </div>
+
+
+        {/* File type information */}
+        <div>
+          <p className="text-gray-500 dark:text-gray-400 text-sm text-center italic ml-3">
+            Please upload .pdf, .txt, .rst, .docx, .md, .zip limited to 25mb
+          </p>
+
+        </div>
+
+      </div>
+
+      {/* Uploaded Files Section */}
+      <div className="w-full mt-8">
+        <div className="flex justify-between items-center mb-2">
+          <h3 className="font-medium text-gray-900 dark:text-white">Uploaded Files</h3>
+          <div className='flex items-center gap-3'>
+            {isLoading ? (
+              <>
+                <span className="text-gray-500 dark:text-gray-400 text-md">
+                  Fetching
+                </span>
+                <div className="w-6 h-6  border-2 border-gray-500 border-t-transparent rounded-full animate-spin"></div>
+
+              </>
+            ) : (
+              <>
+                <span className="invisible text-md">Fetching</span>
+                <div className="w-6 h-6 invisible"></div>
+              </>
+            )}
           </div>
-        ) : uploadedFiles.length === 0 ? (
-          <p>None</p>
+
+        </div>
+
+        {!isLoading && uploadedFiles.length === 0 ? (
+          <p className="text-gray-500 dark:text-gray-400">None</p>
         ) : (
-          <ul className="list-disc ml-4 mt-2">
+          <ul className="space-y-2">
             {uploadedFiles.map((file, index) => (
-              <li key={index} className="text-gray-700">
+              <li key={index} className="text-gray-700 dark:text-gray-300">
                 {file}
               </li>
             ))}

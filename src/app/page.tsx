@@ -40,6 +40,8 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
   const [isFinalPage, setIsFinalPage] = useState<boolean>(false);
+  const [isTrainingComplete, setIsTrainingComplete] = useState<boolean>(false);
+
 
 
   const toggleTheme = () => {
@@ -70,13 +72,14 @@ export default function Home() {
 
     let count = 0;
     const interval = setInterval(() => {
-      count += 10;
+      count += 5;
       setProgress(count);
       if (count >= 100) {
         clearInterval(interval);
         setIsLoading(false);
+        setIsTrainingComplete(true)
       }
-    }, 300);
+    }, 400);
   };
 
   const getGradientForLevel = (level: number): string => {
@@ -86,7 +89,7 @@ export default function Home() {
       case 2:
         return 'bg-gradient-to-br from-pink-200 via-white to-white  dark:from-[#222327] dark:to-black'; // Light pink tone
       case 3:
-        return 'bg-gradient-to-br from-orange-100 via-white to-white dark:from-[#222327] dark:to-black'; // Light orange tone
+        return `bg-gradient-to-br  ${isTrainingComplete == true ? 'from-green-200 ' : 'from-orange-100 '} via-white to-white dark:from-[#222327] dark:to-black`; // Light orange tone
       default:
         return 'bg-white dark:bg-gray-900'; // Default light and dark backgrounds
     }
@@ -96,19 +99,31 @@ export default function Home() {
   const renderContentForLevel = (level: number) => {
     if (isFinalPage) {
       return (
-        <div className="flex flex-col items-center justify-center h-full">
-          <Image src={Logo} alt="Logo" className="w-24 h-24 mb-4" />
-          <h1 className="font-bold text-5xl mt-4">Please wait a moment...</h1>
-          <div className="mt-8 flex flex-col items-center">
-  <div className="relative w-60 h-60">
-    <div className="absolute inset-0 border-8 border-t-transparent border-b-transparent rounded-full animate-spin">
-      <div className="w-full h-full border-8 border-t-purple-600 border-l-red-500 border-r-blue-500 border-b-yellow-500 rounded-full animate-spin"></div>
-    </div>
-    <p className="absolute inset-0 flex justify-center items-center text-lg font-bold text-gray-800">
-      {progress}%
-    </p>
-  </div>
-</div>
+        <div className="flex flex-col items-center justify-center h-full w-full">
+          <Image src={Logo} alt="Logo" className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 " />
+          {isTrainingComplete == true ? (<>          <h1 className="font-bold text-2xl  md:text-3xl lg:text-4xl w-4/5 md:w-3/5 lg:w-2/5 text-center mt-4 dark:text-white">
+            Training Complete !
+          </h1></>) : (<>          {/* Heading */}
+            <h1 className="font-bold text-2xl  md:text-3xl lg:text-4xl w-4/5 md:w-3/5 lg:w-2/5 text-center mt-4 dark:text-white">
+              Training is in progress...
+            </h1>
+
+            {/* Subheading */}
+            <h4 className="text-sm sm:text-base md:text-lg lg:text-xl w-5/6 md:w-3/5 lg:w-1/3 font-normal text-center mt-2 md:mt-4 dark:text-gray-300">
+              This may take several minutes
+            </h4></>)}
+
+          <div className="mt-16 flex flex-col items-center">
+            <div className="relative w-60 h-60">
+              <div className={`absolute inset-0 ${isTrainingComplete===true?' bg-green-600/20 rounded-full w-96 h-96 blur-2xl':''}`}></div>
+              <div className="absolute inset-0 border-8 border-t-transparent border-b-transparent rounded-full animate-spin">
+                <div className="w-full h-full border-8 border-t-purple-600 border-l-red-500 border-r-blue-500 border-b-yellow-500 rounded-full animate-spin"></div>
+              </div>
+              <p className="absolute inset-0 flex justify-center items-center text-lg font-bold dark:text-white text-gray-800">
+                {progress}%
+              </p>
+            </div>
+          </div>
 
 
 
@@ -154,7 +169,9 @@ export default function Home() {
               {/* Card 1 */}
               <div className="flex flex-col items-center ">
                 <div
-                  className={`p-4 border rounded-lg shadow-md hover:shadow-2xl  bg-white dark:bg-gray-800 cursor-pointer ${selectedCard === 1 ? 'border-2 border-purple-700' : ''} transition-shadow duration-300`}
+                  className={`p-4 border-2 ${selectedCard === 1 ? 'border-purple-700 dark:shadow-[-20px_35px_50px_-15px_rgba(0,0,0,0.5)]' : 'border-transparent shadow-md hover:shadow-2xl'} 
+                  rounded-lg bg-white dark:bg-gray-800 cursor-pointer transition-shadow duration-300`}
+
                   onClick={() => handleCardSelect(1)}
                 >
                   <div className="p-6 sm:p-8 md:p-10 lg:p-12">
@@ -173,7 +190,8 @@ export default function Home() {
               {/* Card 2 */}
               <div className="flex flex-col items-center ">
                 <div
-                  className={`p-4 border rounded-lg shadow-md hover:shadow-2xl bg-white dark:bg-gray-800 cursor-pointer ${selectedCard === 2 ? 'border-2 border-purple-700' : ''} transition-shadow duration-300`}
+                  className={`p-4 border-2 ${selectedCard === 2 ? 'border-purple-700 dark:shadow-[20px_35px_50px_-15px_rgba(0,0,0,0.5)]' : 'border-transparent shadow-md hover:shadow-2xl'} 
+                  rounded-lg bg-white dark:bg-gray-800 cursor-pointer transition-shadow duration-300`}
                   onClick={() => handleCardSelect(2)}
                 >
                   <div className="p-6 sm:p-8 md:p-10 lg:p-12">
@@ -195,19 +213,23 @@ export default function Home() {
         );
       case 3:
         return (
-          <div className="flex flex-col items-center transition-all duration-500 ease-in-out">
+          <div className="flex flex-col w-full items-center gap-5 transition-all duration-500 ease-in-out">
+            <Image src={Logo} alt="Logo" className="w-16 h-16 sm:w-20 sm:h-20 " />
+
+            {/* Heading */}
+            <h1 className="font-bold text-xl sm:text-2xl md:text-3xl  w-4/5 md:w-3/5 lg:w-2/5 text-center mb-5 dark:text-white">
+              Upload new document
+            </h1>
             {selectedCard === 1 ? (
-              // <div className="p-4 border rounded-lg shadow-md bg-white w-64">Simple Form</div>
               <UploadFromDeviceForm />
             ) : (
-              // <div className="p-4 border rounded-lg shadow-md bg-white w-64">Advanced Form</div>
               <CollectFromWebsiteForm />
             )}
             {isLoading && (
               <div className="mt-8">
                 <div className="w-16 h-16 border-t-4 border-purple-600 rounded-full animate-spin"></div>
                 <p className="text-lg mt-2">{progress}%</p>
-                
+
               </div>
             )}
           </div>
@@ -268,7 +290,7 @@ export default function Home() {
                   onClick={handleLevelDown}
                   className="px-2 py-1 text-gray-500 hover:text-gray-700 text-lg font-medium transition-colors flex items-center"
                 >
-                  <Image src={Back} alt="<" className="mr-2" /> Back
+                  <Image src={Back} alt="<" className="mr-2 dark:invert" /><span className="dark:text-gray-400">Back</span>
                 </button>
 
               )}
