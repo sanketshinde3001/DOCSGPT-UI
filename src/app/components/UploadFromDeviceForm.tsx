@@ -10,7 +10,6 @@ interface UploadFromDeviceForm {
 }
 
 export default function UploadFromDeviceForm() {
-  const [fileName, setFileName] = useState<string>("");
   const [uploadedFiles, setUploadedFiles] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -19,7 +18,6 @@ export default function UploadFromDeviceForm() {
     if (file && file.size <= 25 * 1024 * 1024) {
       setIsLoading(true);
       await new Promise((resolve) => setTimeout(resolve, 2000));
-      setFileName(file.name);
       setUploadedFiles([...uploadedFiles, file.name]);
       setIsLoading(false);
     } else {
