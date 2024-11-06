@@ -22,7 +22,7 @@ const LevelIndicator: React.FC<LevelIndicatorProps> = ({ currentLevel, indicator
   const isPast = currentLevel > indicatorLevel;
 
   return (
-    <div className="flex flex-col items-center mx-2">
+    <div className="flex flex-col items-center mx-2 transition-transform duration-500 ease-in-out">
       <div
         className={`h-2 rounded-full transition-all duration-500 ease-in-out
           ${isActive ? 'w-24 h-2 bg-[#7d54d1]' :
@@ -72,7 +72,7 @@ export default function Home() {
 
     let count = 0;
     const interval = setInterval(() => {
-      count += 5;
+      count += 10;
       setProgress(count);
       if (count >= 100) {
         clearInterval(interval);
@@ -87,7 +87,7 @@ export default function Home() {
       case 1:
         return 'bg-gradient-to-br from-green-200 via-white to-white  dark:from-[#222327] dark:to-black'; // Light greenish tone
       case 2:
-        return 'bg-gradient-to-br from-pink-200 via-white to-white  dark:from-[#222327] dark:to-black'; // Light pink tone
+        return 'bg-gradient-to-br from-pink-300 via-white to-white  dark:from-[#222327] dark:to-black'; // Light pink tone
       case 3:
         return `bg-gradient-to-br  ${isTrainingComplete == true ? 'from-green-200 ' : 'from-orange-100 '} via-white to-white dark:from-[#222327] dark:to-black`; // Light orange tone
       default:
@@ -99,23 +99,23 @@ export default function Home() {
   const renderContentForLevel = (level: number) => {
     if (isFinalPage) {
       return (
-        <div className="flex flex-col items-center justify-center h-full w-full">
-          <Image src={Logo} alt="Logo" className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 " />
-          {isTrainingComplete == true ? (<>          <h1 className="font-bold text-2xl  md:text-3xl lg:text-4xl w-4/5 md:w-3/5 lg:w-2/5 text-center mt-4 dark:text-white">
+        <div className="flex flex-col items-center justify-center h-full w-full ">
+          <Image src={Logo} alt="Logo" className="w-16 h-16 sm:w-20 sm:h-20  opacity-0 animate-fadeInSlideUp" />
+          {isTrainingComplete == true ? (<div className="opacity-0 animate-fadeInSlideUp w-4/5 md:w-3/5 lg:w-2/5"><h1 className="font-bold text-2xl opacity-0 animate-fadeInSlideUp  md:text-3xl lg:text-4xl  text-center mt-4 dark:text-white">
             Training Complete !
-          </h1></>) : (<>          {/* Heading */}
-            <h1 className="font-bold text-2xl  md:text-3xl lg:text-4xl w-4/5 md:w-3/5 lg:w-2/5 text-center mt-4 dark:text-white">
+          </h1></div>) : (<>          {/* Heading */}
+            <h1 className="font-bold text-2xl opacity-0 animate-fadeInSlideUp  md:text-3xl lg:text-4xl w-4/5 md:w-3/5 lg:w-2/5 text-center mt-4 dark:text-white">
               Training is in progress...
             </h1>
 
             {/* Subheading */}
-            <h4 className="text-sm sm:text-base md:text-lg lg:text-xl w-5/6 md:w-3/5 lg:w-1/3 font-normal text-center mt-2 md:mt-4 dark:text-gray-300">
+            <h4 className="text-sm sm:text-base opacity-0 animate-fadeInSlideUp md:text-lg lg:text-xl w-5/6 md:w-3/5 lg:w-1/3 font-normal text-center mt-2 md:mt-4 dark:text-gray-300">
               This may take several minutes
             </h4></>)}
 
-          <div className="mt-16 flex flex-col items-center">
+          <div className="mt-28 mb-20 flex flex-col items-center transition-all duration-400 ease-in-out opacity-0  animate-fadeInSlideUp">
             <div className="relative w-60 h-60">
-              <div className={`absolute inset-0 ${isTrainingComplete===true?' bg-green-600/20 rounded-full w-96 h-96 blur-2xl':''}`}></div>
+              <div className={`absolute inset-0 ${isTrainingComplete === true ? ' bg-green-600/20 rounded-full w-96 h-96 blur-2xl' : ''}`}></div>
               <div className="absolute inset-0 border-8 border-t-transparent border-b-transparent rounded-full animate-spin">
                 <div className="w-full h-full border-8 border-t-purple-600 border-l-red-500 border-r-blue-500 border-b-yellow-500 rounded-full animate-spin"></div>
               </div>
@@ -129,8 +129,14 @@ export default function Home() {
 
           {!isLoading && (
             <button
-              className="mt-6 px-8 py-3 bg-purple-600 text-white rounded-lg transition-all hover:bg-purple-700 shadow-[0_4px_8px_rgba(128,90,213,0.3)]">
+              className="mt-6 px-8 py-3 bg-purple-600 text-white rounded-lg  hover:bg-purple-700 shadow-[0_4px_8px_rgba(128,90,213,0.3)] transition-all duration-400 ease-in-out opacity-0 animate-fadeInSlideUp">
               Start Chatting
+            </button>
+          )}
+          {isLoading && (
+            <button
+              className="mt-6 px-8 py-3 bg-purple-300 text-white rounded-lg disabled:cursor-not-allowed  shadow-[0_4px_8px_rgba(128,90,213,0.3)] transition-all duration-400 ease-in-out opacity-0 animate-fadeInSlideUp ">
+              Please wait...
             </button>
           )}
         </div>
@@ -140,26 +146,28 @@ export default function Home() {
     switch (level) {
       case 1:
         return (
-          <div className="flex flex-col items-center transition-all duration-500 ease-in-out">
-            <Image src={Logo} alt="Logo" className="w-20 h-20 mb-4 max-sm:w-22 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 xl:w-36 xl:h-36 2xl:w-40 2xl:h-40" />
-            <h1 className="font-bold text-4xl max-sm:text-center sm:text-5xl md:text-6xl mt-4 dark:text-white">Welcome to DocsGPT</h1>
-            <p className="text-base sm:text-lg md:text-xl mt-2 dark:text-gray-300">Your technical documentation assistant.</p>
-          </div>
+          <>
+            <div className="flex flex-col items-center transition-opacity duration-1000 ease-out opacity-0 animate-fadeInSlideUp">
+              <Image src={Logo} alt="Logo" className="w-20 h-20 mb-4 max-sm:w-22 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 xl:w-36 xl:h-36 2xl:w-40 2xl:h-40" />
+              <h1 className="font-bold text-4xl max-sm:text-center sm:text-5xl md:text-6xl dark:text-white">Welcome to DocsGPT</h1>
+              <p className="text-base sm:text-lg md:text-xl mt-6 dark:text-gray-300">Your technical documentation assistant.</p>
+            </div>
+          </>
 
         );
       case 2:
         return (
-          <div className="flex w-full flex-col items-center transition-all duration-500 ease-in-out">
+          <div className="flex w-full flex-col items-center transition-all duration-500 ease-in-out opacity-0 animate-fadeInSlideUp max-sm:mt-24">
             {/* Logo */}
-            <Image src={Logo} alt="Logo" className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 mb-4" />
+            <Image src={Logo} alt="Logo" className="w-16 h-16 sm:w-20 sm:h-20 md:w-22 md:h-22" />
 
             {/* Heading */}
-            <h1 className="font-bold text-xl sm:text-2xl md:text-3xl lg:text-4xl w-4/5 md:w-3/5 lg:w-2/5 text-center mt-4 dark:text-white">
+            <h1 className="font-bold text-xl sm:text-2xl md:text-3xl lg:text-4xl w-4/5 md:w-3/5 xl:w-1/3 2xl:w-1/4 text-center mt-3 dark:text-white">
               Upload from device or from web?
             </h1>
 
             {/* Subheading */}
-            <h4 className="text-sm sm:text-base md:text-lg lg:text-xl w-5/6 md:w-3/5 lg:w-1/3 font-normal text-center mt-2 md:mt-4 dark:text-gray-300">
+            <h4 className="text-sm sm:text-base md:text-lg lg:text-xl w-4/5 sm:w-2/5 md:w-[40%] xl:w-1/4 2xl:w-1/5  font-normal text-center mt-2 md:mt-4 dark:text-gray-300">
               You can choose how to add your first document to DocsGPT
             </h4>
 
@@ -169,8 +177,8 @@ export default function Home() {
               {/* Card 1 */}
               <div className="flex flex-col items-center ">
                 <div
-                  className={`p-4 border-2 ${selectedCard === 1 ? 'border-purple-700 dark:shadow-[-20px_35px_50px_-15px_rgba(0,0,0,0.5)]' : 'border-transparent shadow-md hover:shadow-2xl'} 
-                  rounded-lg bg-white dark:bg-gray-800 cursor-pointer transition-shadow duration-300`}
+                  className={`p-4 border-2 ${selectedCard === 1 ? 'border-purple-700 shadow-all-sides-hover  dark:shadow-[-20px_35px_50px_-15px_rgba(0,0,0,0.5)]' : 'border-transparent shadow-all-sides hover:shadow-all-sides-hover'} 
+                  rounded-xl bg-white dark:bg-gray-800 cursor-pointer transition-all duration-500 ease-in-out`}
 
                   onClick={() => handleCardSelect(1)}
                 >
@@ -178,11 +186,12 @@ export default function Home() {
                     <Image
                       src={L2C1}
                       alt="L1C1"
-                      className={`w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 dark:filter dark:invert lg:h-16 ${selectedCard === 1 ? 'scale-125' : ''}`}
+                      className={`w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 dark:filter dark:invert transition-transform duration-300 ease-in-out ${selectedCard === 1 ? 'scale-125' : ''}`}
+
                     />
                   </div>
                 </div>
-                <h4 className={`text-xs sm:text-base md:text-lg w-4/5 md:w-2/3 text-center mt-4 dark:text-gray-200 ${selectedCard === 1 ? 'text-purple-700' : ''}`}>
+                <h4 className={`text-xs sm:text-base md:text-lg w-4/5 md:w-2/3 text-center mt-4 dark:text-gray-200 transition-all duration-500 ease-in-out ${selectedCard === 1 ? 'text-purple-700 ' : ''}`}>
                   Upload from device
                 </h4>
               </div>
@@ -190,19 +199,20 @@ export default function Home() {
               {/* Card 2 */}
               <div className="flex flex-col items-center ">
                 <div
-                  className={`p-4 border-2 ${selectedCard === 2 ? 'border-purple-700 dark:shadow-[20px_35px_50px_-15px_rgba(0,0,0,0.5)]' : 'border-transparent shadow-md hover:shadow-2xl'} 
-                  rounded-lg bg-white dark:bg-gray-800 cursor-pointer transition-shadow duration-300`}
+                  className={`p-4 border-2 ${selectedCard === 2 ? 'border-purple-700 shadow-all-sides-hover dark:shadow-[20px_35px_50px_-15px_rgba(0,0,0,0.5)]' : 'border-transparent shadow-all-sides hover:shadow-all-sides-hover'} 
+                  rounded-xl bg-white dark:bg-gray-800 cursor-pointer transition-all duration-500 ease-in-out`}
                   onClick={() => handleCardSelect(2)}
                 >
                   <div className="p-6 sm:p-8 md:p-10 lg:p-12">
                     <Image
                       src={L2C2}
                       alt="L1C2"
-                      className={`w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 dark:filter dark:invert lg:h-16 ${selectedCard === 2 ? 'scale-125' : ''}`}
+                      className={`w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 dark:filter dark:invert transition-transform duration-300 ease-in-out ${selectedCard === 2 ? 'scale-125' : ''}`}
+
                     />
                   </div>
                 </div>
-                <h4 className={`text-xs sm:text-base md:text-lg w-4/5 md:w-2/3 text-center mt-4 dark:text-gray-200 ${selectedCard === 2 ? 'text-purple-700' : ''}`}>
+                <h4 className={`text-xs sm:text-base md:text-lg w-4/5 md:w-2/3 text-center mt-4 dark:text-gray-200 transition-all duration-500 ease-in-out ${selectedCard === 2 ? 'text-purple-700' : ''}`}>
                   Collect from a website
                 </h4>
               </div>
@@ -213,11 +223,11 @@ export default function Home() {
         );
       case 3:
         return (
-          <div className="flex flex-col w-full items-center gap-5 transition-all duration-500 ease-in-out">
-            <Image src={Logo} alt="Logo" className="w-16 h-16 sm:w-20 sm:h-20 " />
+          <div className="flex flex-col w-full items-center gap-5 transition-all duration-500 ease-in-out opacity-0 animate-fadeInSlideUp">
+            <Image src={Logo} alt="Logo" className="w-16 h-16 sm:w-20 sm:h-20 opacity-0 animate-fadeInSlideUp" />
 
             {/* Heading */}
-            <h1 className="font-bold text-xl sm:text-2xl md:text-3xl  w-4/5 md:w-3/5 lg:w-2/5 text-center mb-5 dark:text-white">
+            <h1 className="font-bold text-xl sm:text-2xl md:text-3xl opacity-0 animate-fadeInSlideUp  w-4/5 md:w-3/5 lg:w-2/5 text-center mb-5 dark:text-white">
               Upload new document
             </h1>
             {selectedCard === 1 ? (
@@ -276,7 +286,7 @@ export default function Home() {
 
         {!isFinalPage && (
           <>
-            <div className="flex justify-center mb-8">
+            <div className="flex justify-center mb-2">
               <div className="flex space-x-1">
                 {[1, 2, 3].map(num => (
                   <LevelIndicator key={num} currentLevel={level} indicatorLevel={num} />
@@ -296,8 +306,8 @@ export default function Home() {
               )}
               <button
                 onClick={level === 2 && selectedCard === null ? undefined : (level === 3 ? handleFinalButtonClick : handleLevelUp)}
-                className={`px-8 py-3 ${level === 2 && selectedCard === null ? 'bg-gray-300 dark:bg-purple-400 cursor-not-allowed' : 'bg-purple-600 hover:bg-purple-700'} 
-                text-white rounded-lg transition-all shadow-[0_4px_8px_rgba(128,90,213,0.3)]`}
+                className={`px-8 py-3 ${level === 2 && selectedCard === null ? 'bg-gray-300 dark:bg-purple-400 cursor-not-allowed' : 'bg-purple-600 hover:bg-purple-800'} 
+                text-white rounded-lg transition-all duration-500 ease-in-out shadow-[0_4px_8px_rgba(128,90,213,0.3)]`}
                 disabled={level === 2 && selectedCard === null}>
                 {isLoading ? "In Progress" : level === 1 ? "Get Started" : level === 2 ? "Next" : "Train"}
               </button>

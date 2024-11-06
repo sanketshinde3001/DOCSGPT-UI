@@ -38,7 +38,7 @@ const CollectFromWebsiteForm: React.FC = () => {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl w-full max-w-md lg:max-w-lg 2xl:max-w-xl mx-auto ">
+    <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl w-full max-w-md lg:max-w-lg 2xl:max-w-xl mx-auto opacity-0 animate-fadeInSlideUp">
       <h2 className="text-gray-700 dark:text-gray-200 text-xl font-semibold mb-6">
         Collect from a website
       </h2>

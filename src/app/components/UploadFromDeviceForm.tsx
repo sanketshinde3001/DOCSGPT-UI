@@ -26,7 +26,7 @@ export default function UploadFromDeviceForm() {
   };
 
   return (
-    <div className="flex flex-col items-start bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg w-full max-w-lg mx-auto">
+    <div className="flex flex-col items-start bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg w-full max-w-lg mx-auto opacity-0 animate-fadeInSlideUp">
       <h1 className="font-semibold text-2xl text-gray-900 dark:text-white mb-8">
         Upload from device
       </h1>
