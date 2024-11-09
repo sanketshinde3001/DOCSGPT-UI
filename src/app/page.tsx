@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from "react";
-import React from 'react';
 import Globe from "./assets/globe.svg";
 import Profile from "./assets/profie.png";
 import Image from "next/image";
@@ -42,12 +41,11 @@ export default function Home() {
   const [isFinalPage, setIsFinalPage] = useState<boolean>(false);
   const [isTrainingComplete, setIsTrainingComplete] = useState<boolean>(false);
 
-
-
-  const toggleTheme = () => {
-    setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
-    document.documentElement.classList.toggle('dark', theme === 'light'); // Toggle the dark class on the HTML element
-  };
+const toggleTheme = () => {
+  const newTheme = theme === 'light' ? 'dark' : 'light';
+  setTheme(newTheme);
+  document.documentElement.classList.toggle('dark', newTheme === 'dark');
+};
 
   const handleLevelUp = () => {
     if (level < 3) {
@@ -68,20 +66,22 @@ export default function Home() {
 
   const handleFinalButtonClick = () => {
     setIsLoading(true);
-    setIsFinalPage(true); // Show only the final page content when the spinner starts
-
-    let count = 0;
-    const interval = setInterval(() => {
-      count += 10;
-      setProgress(count);
-      if (count >= 100) {
-        clearInterval(interval);
+    setIsFinalPage(true);
+  
+    const updateProgress = (current: number) => {
+      if (current >= 100) {
+        setProgress(100);
         setIsLoading(false);
-        setIsTrainingComplete(true)
+        setIsTrainingComplete(true);
+        return;
       }
-    }, 400);
+      setProgress(current);
+      setTimeout(() => updateProgress(current + 10), 400);
+    };
+  
+    updateProgress(0);
   };
-
+  
   const getGradientForLevel = (level: number): string => {
     switch (level) {
       case 1:
@@ -94,7 +94,6 @@ export default function Home() {
         return 'bg-white dark:bg-gray-900'; // Default light and dark backgrounds
     }
   };
-
 
   const renderContentForLevel = (level: number) => {
     if (isFinalPage) {
@@ -306,7 +305,7 @@ export default function Home() {
               )}
               <button
                 onClick={level === 2 && selectedCard === null ? undefined : (level === 3 ? handleFinalButtonClick : handleLevelUp)}
-                className={`px-8 py-3 ${level === 2 && selectedCard === null ? 'bg-gray-300 dark:bg-purple-400 cursor-not-allowed' : 'bg-purple-600 hover:bg-purple-800'} 
+                className={`px-8 py-3 ${level === 2 && selectedCard === null ? 'bg-gray-300 dark:bg-[#7d54d14d] cursor-not-allowed' : 'bg-purple-600 hover:bg-purple-800'} 
                 text-white rounded-lg transition-all duration-500 ease-in-out shadow-[0_4px_8px_rgba(128,90,213,0.3)]`}
                 disabled={level === 2 && selectedCard === null}>
                 {isLoading ? "In Progress" : level === 1 ? "Get Started" : level === 2 ? "Next" : "Train"}
