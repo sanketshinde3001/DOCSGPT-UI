@@ -7,6 +7,7 @@ import Image from "next/image";
 import Logo from './assets/Logo.svg';
 import L2C1 from "./assets/level2card1.svg";
 import L2C2 from "./assets/level2card2.svg";
+import BG from "./assets/bg.svg";
 import Back from "./assets/Back.svg";
 import UploadFromDeviceForm from "./components/UploadFromDeviceForm";
 import CollectFromWebsiteForm from "./components/CollectFromWebsiteForm";
@@ -81,11 +82,12 @@ const toggleTheme = () => {
   
     updateProgress(0);
   };
+
   
   const getGradientForLevel = (level: number): string => {
     switch (level) {
       case 1:
-        return 'bg-gradient-to-br from-green-200 via-white to-white  dark:from-[#222327] dark:to-black'; // Light greenish tone
+        return `relative z-0 bg-gradient-to-br from-green-200 via-white to-white dark:from-[#222327] dark:to-black`; // Light greenish tone
       case 2:
         return 'bg-gradient-to-br from-pink-300 via-white to-white  dark:from-[#222327] dark:to-black'; // Light pink tone
       case 3:
@@ -251,9 +253,12 @@ const toggleTheme = () => {
   return (
     <div className={`p-4 w-full relative flex flex-col h-screen ${getGradientForLevel(level)}`}>
 
-      <div className="dark:absolute dark:top-1/4 dark:left-1/4 dark:w-96 dark:h-96 dark:bg-blue-600/10 dark:rounded-full dark:blur-2xl dark:transform dark:-translate-x-2/4 dark:-translate-y-1/2"></div>
+<div className="absolute inset-0 -z-0 dark:bg-[url('./assets/bg.svg')] dark:bg-center dark:bg-cover"></div>
+
+{/* <div className="dark:absolute dark:top-1/4 dark:left-1/4 dark:w-96 dark:h-96 dark:bg-blue-600/10 dark:rounded-full dark:blur-2xl dark:transform dark:-translate-x-2/4 dark:-translate-y-1/2"></div>
       <div className="dark:absolute dark:top-1/3 dark:left-1/3 dark:w-96 dark:h-96 dark:bg-green-600/10 dark:rounded-full dark:blur-2xl dark:transform dark:-translate-x-1/3 dark:-translate-y-1/3"></div>
-      <div className="dark:absolute dark:top-1/2 dark:left-1/2 dark:w-[500px] dark:h-[500px] dark:bg-orange-700/20 dark:rounded-full dark:blur-3xl dark:transform dark:-translate-x-1/2 dark:-translate-y-1/2"></div>
+      <div className="dark:absolute dark:top-1/2 dark:left-1/2 dark:w-[500px] dark:h-[500px] dark:bg-orange-700/20 dark:rounded-full dark:blur-3xl dark:transform dark:-translate-x-1/2 dark:-translate-y-1/2"></div> */}
+
 
 
 
