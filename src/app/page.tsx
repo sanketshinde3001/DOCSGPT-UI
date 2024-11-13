@@ -7,7 +7,6 @@ import Image from "next/image";
 import Logo from './assets/Logo.svg';
 import L2C1 from "./assets/level2card1.svg";
 import L2C2 from "./assets/level2card2.svg";
-import BG from "./assets/bg.svg";
 import Back from "./assets/Back.svg";
 import UploadFromDeviceForm from "./components/UploadFromDeviceForm";
 import CollectFromWebsiteForm from "./components/CollectFromWebsiteForm";
