@@ -120,7 +120,7 @@ export default function Home() {
                 <div className="absolute inset-0 rounded-full shadow-[0_0_10px_2px_rgba(0,0,0,0.3)_inset] dark:shadow-[0_0_10px_2px_rgba(0,0,0,0.3)_inset]"></div>
                 <div
                   className={`absolute inset-0 rounded-full ${progress === 100
-                      ? 'shadow-xl shadow-lime-300/50 dark:shadow-lime-300/50 bg-gradient-to-r from-white to-gray-400 dark:bg-gradient-to-br dark:from-gray-500 dark:to-gray-300'
+                      ? 'shadow-xl shadow-lime-300/50 dark:shadow-lime-300/50 '
                       : 'shadow-[0_4px_0_#7D54D1] dark:shadow-[0_4px_0_#7D54D1]'
                     }`}
                   style={{
