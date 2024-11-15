@@ -41,11 +41,11 @@ export default function Home() {
   const [isFinalPage, setIsFinalPage] = useState<boolean>(false);
   const [isTrainingComplete, setIsTrainingComplete] = useState<boolean>(false);
 
-const toggleTheme = () => {
-  const newTheme = theme === 'light' ? 'dark' : 'light';
-  setTheme(newTheme);
-  document.documentElement.classList.toggle('dark', newTheme === 'dark');
-};
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    document.documentElement.classList.toggle('dark', newTheme === 'dark');
+  };
 
   const handleLevelUp = () => {
     if (level < 3) {
@@ -67,7 +67,7 @@ const toggleTheme = () => {
   const handleFinalButtonClick = () => {
     setIsLoading(true);
     setIsFinalPage(true);
-  
+
     const updateProgress = (current: number) => {
       if (current >= 100) {
         setProgress(100);
@@ -78,11 +78,11 @@ const toggleTheme = () => {
       setProgress(current);
       setTimeout(() => updateProgress(current + 10), 400);
     };
-  
+
     updateProgress(0);
   };
 
-  
+
   const getGradientForLevel = (level: number): string => {
     switch (level) {
       case 1:
@@ -113,17 +113,39 @@ const toggleTheme = () => {
               This may take several minutes
             </h4></>)}
 
-          <div className="mt-28 mb-20 flex flex-col items-center transition-all duration-400 ease-in-out opacity-0  animate-fadeInSlideUp">
-            <div className="relative w-60 h-60">
-              <div className={`absolute inset-0 ${isTrainingComplete === true ? ' bg-green-600/20 rounded-full w-96 h-96 blur-2xl' : ''}`}></div>
-              <div className="absolute inset-0 border-8 border-t-transparent border-b-transparent rounded-full animate-spin">
-                <div className="w-full h-full border-8 border-t-purple-600 border-l-red-500 border-r-blue-500 border-b-yellow-500 rounded-full animate-spin"></div>
+          <div className="mt-16 mb-12 flex flex-col items-center transition-all duration-400 ease-in-out opacity-0 animate-fadeInSlideUp">
+            <div className="relative w-60 h-60 flex items-center justify-center">
+              {/* New Progress Bar */}
+              <div className="relative w-40 h-40 rounded-full">
+                <div className="absolute inset-0 rounded-full shadow-[0_0_10px_2px_rgba(0,0,0,0.3)_inset] dark:shadow-[0_0_10px_2px_rgba(0,0,0,0.3)_inset]"></div>
+                <div
+                  className={`absolute inset-0 rounded-full ${progress === 100
+                      ? 'shadow-xl shadow-lime-300/50 dark:shadow-lime-300/50 bg-gradient-to-r from-white to-gray-400 dark:bg-gradient-to-br dark:from-gray-500 dark:to-gray-300'
+                      : 'shadow-[0_4px_0_#7D54D1] dark:shadow-[0_4px_0_#7D54D1]'
+                    }`}
+                  style={{
+                    animation: `${progress === 100 ? 'none' : 'rotate 2s linear infinite'}`,
+                  }}
+                ></div>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-2xl font-bold dark:text-white text-gray-800">{progress}%</span>
+                </div>
               </div>
-              <p className="absolute inset-0 flex justify-center items-center text-lg font-bold dark:text-white text-gray-800">
-                {progress}%
-              </p>
+
+              {/* Keyframes for rotation animation */}
+              <style jsx>{`
+      @keyframes rotate {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    `}</style>
             </div>
           </div>
+
 
 
 
@@ -252,9 +274,9 @@ const toggleTheme = () => {
   return (
     <div className={`p-4 w-full relative flex flex-col h-screen ${getGradientForLevel(level)}`}>
 
-<div className="absolute inset-0 -z-0 dark:bg-[url('./assets/bg.svg')] dark:bg-center dark:bg-cover"></div>
+      <div className="absolute inset-0 -z-0 dark:bg-[url('./assets/bg.svg')] dark:bg-center dark:bg-cover"></div>
 
-{/* <div className="dark:absolute dark:top-1/4 dark:left-1/4 dark:w-96 dark:h-96 dark:bg-blue-600/10 dark:rounded-full dark:blur-2xl dark:transform dark:-translate-x-2/4 dark:-translate-y-1/2"></div>
+      {/* <div className="dark:absolute dark:top-1/4 dark:left-1/4 dark:w-96 dark:h-96 dark:bg-blue-600/10 dark:rounded-full dark:blur-2xl dark:transform dark:-translate-x-2/4 dark:-translate-y-1/2"></div>
       <div className="dark:absolute dark:top-1/3 dark:left-1/3 dark:w-96 dark:h-96 dark:bg-green-600/10 dark:rounded-full dark:blur-2xl dark:transform dark:-translate-x-1/3 dark:-translate-y-1/3"></div>
       <div className="dark:absolute dark:top-1/2 dark:left-1/2 dark:w-[500px] dark:h-[500px] dark:bg-orange-700/20 dark:rounded-full dark:blur-3xl dark:transform dark:-translate-x-1/2 dark:-translate-y-1/2"></div> */}
 
